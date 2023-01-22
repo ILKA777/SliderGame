@@ -8,14 +8,43 @@
 import SwiftUI
 
 struct ContentView: View {
+    @State var randomValue = Int.random(in: 0...100)
+    @State private var SliderValue = Double.random(in: 0...100)
+    @State var refresh: Bool = false
+    
     var body: some View {
+        
         VStack {
-            Image(systemName: "globe")
-                .imageScale(.large)
-                .foregroundColor(.accentColor)
-            Text("Hello, world!")
+            Text("Подвиньте слайдер, как можно ближе к: \(randomValue)")
+            HStack {
+                Text("0")
+                SliderUIKit(thumbColor:.red, value: $SliderValue).opacity(Double(computeScore())*0.01)
+                    
+                Text("100")
+                
+            }
+            
+            ButtonCheckView(score: computeScore())
+            
+            
+            Button("Начать заново") {
+                update()
+            }
+                
         }
         .padding()
+            
+        
+    }
+    func update() {
+       SliderValue = Double.random(in: 0...100)
+        randomValue = Int.random(in: 0...100)
+        
+    }
+    
+    public func computeScore() -> Int {
+        let difference = abs(randomValue - lround(SliderValue))
+        return 100 - difference
     }
 }
 
@@ -24,3 +53,4 @@ struct ContentView_Previews: PreviewProvider {
         ContentView()
     }
 }
+
